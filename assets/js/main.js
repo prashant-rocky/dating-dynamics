@@ -315,3 +315,10 @@ window.onclick = function(event) {
 }
   imJs.m();
 })(jQuery, window)
+
+// OPTIONAL: Show success or error messages from PHP
+    const params = new URLSearchParams(window.location.search);
+    const message = params.get('message');
+    if (message) {
+        document.getElementById('subscribe-message').textContent = message;
+    }
