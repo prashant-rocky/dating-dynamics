@@ -83,12 +83,13 @@
                             <div class="content">
                                 <h3 class="title mb--20">Get Newsletter</h3>
                             </div>
-                            <form action="subscribe.php">
+                            <form class="subscribeForm">
                                 <div class="input-div">
-                                    <input type="email" placeholder="Your email..." required>
+                                    <input name="email" type="email" placeholder="Your email..." required>
                                 </div>
                                 <button type="submit" class="subscribe-btn">Subscribe Now</button>
                             </form>
+                            <div id="responseMsg"></div>
                         </div>
                     </div>
                 </div>
@@ -127,10 +128,11 @@
                         <div class="eblog-p-sub-heading">
                             <h3>Let's join our newsletter!</h3>
                         </div>
-                        <form method="POST">
-                            <input type="email" required placeholder="Enter Your Email..">
+                        <form class="subscribeForm">
+                            <input name="email" type="email" required placeholder="Enter Your Email..">
                             <button type="submit">Submit</button>
                         </form>
+                        <div id="responseMsg"></div>
                         <div class="eblog-bottom-popup">
                             <p>Do not worry we don't spam!</p>
                         </div>
@@ -317,7 +319,7 @@
                 <h2 class="section-title">Join our newsletter for <br>
                     latest updates!</h2>
                 <p class="desc">Subscribe to our newsletter for weekly dating tips, relationship advice, and inspiring stories from Tokyo and beyond.</p>
-                <form action="subscribe.php" class="newsletter-form">
+                <form class="subscribeForm" class="newsletter-form">
                     <div class="form-inner">
                         <div class="single-input-wrapper">
                             <input type="email" name="email" placeholder="Your email address" required>
@@ -327,6 +329,7 @@
                         </div>
                     </div>
                 </form>
+                <div id="responseMsg"></div>
             </div>
         </div>
     </section>
@@ -348,7 +351,7 @@
                 </div>
                 <div class="footer-newsletter-area">
                     <p class="tag">Join my newsletter:</p>
-                    <form action="subscribe.php">
+                    <form class="subscribeForm">
                         <div class="form-inner">
                             <div class="single-input-wrapper">
                                 <input type="email" name="email" placeholder="Your mail address" required>
@@ -358,6 +361,7 @@
                             </div>
                         </div>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -403,7 +407,45 @@
     <!-- main js file -->
     <script src="assets/js/main.js" defer></script>
     <!-- End Footer Area -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll(".subscribeForm");
 
+            forms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const responseDiv = this.nextElementSibling; // assumes <div class="responseMsg"> is right after the form
+
+                    fetch("subscribe.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            responseDiv.innerHTML = data;
+
+                            // Auto-hide after 3s
+                            if (data.trim() !== "") {
+                                setTimeout(() => {
+                                    responseDiv.style.opacity = "0";
+                                    setTimeout(() => {
+                                        responseDiv.innerHTML = "";
+                                        responseDiv.style.opacity = "1";
+                                    }, 400);
+                                }, 3000);
+                            }
+                        })
+                        .catch(() => {
+                            responseDiv.innerHTML = "<p class='error-msg'>Something went wrong. Please try again.</p>";
+                            setTimeout(() => { responseDiv.innerHTML = ""; }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
+</body>
 </body>
 
 </html>

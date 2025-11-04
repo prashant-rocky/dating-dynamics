@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dating dynamics | about</title>
+    <title>datingdynamo | about</title>
     <link rel="shortcut icon" href="assets/images/icon/fav.svg" type="image/x-icon">
 
     <link rel="stylesheet preload" href="assets/css/plugins/fontawesome-5.css" as="style">
@@ -86,12 +86,13 @@
                             <div class="content">
                                 <h3 class="title mb--20">Get Newsletter</h3>
                             </div>
-                            <form action="subscribe.php">
+                            <form class="subscribeForm">
                                 <div class="input-div">
-                                    <input type="email" placeholder="Your email..." required>
+                                    <input name="email" type="email" placeholder="Your email..." required>
                                 </div>
                                 <button type="submit" class="subscribe-btn">Subscribe Now</button>
                             </form>
+                            <div id="responseMsg"></div>
                         </div>
                     </div>
                 </div>
@@ -131,10 +132,11 @@
                         <div class="eblog-p-sub-heading">
                             <h3>Let's join our newsletter!</h3>
                         </div>
-                        <form method="POST">
-                            <input type="email" required placeholder="Enter Your Email..">
+                        <form class="subscribeForm">
+                            <input name="email" type="email" required placeholder="Enter Your Email..">
                             <button type="submit">Submit</button>
                         </form>
+                        <div id="responseMsg"></div>
                         <div class="eblog-bottom-popup">
                             <p>Do not worry we don't spam!</p>
                         </div>
@@ -178,9 +180,9 @@
 
                 <!-- Right side: Text -->
                 <div class="about-content">
-                    <h2>About Dating Dynamics</h2>
+                    <h2>About datingdynamo</h2>
                     <p>
-                        <strong>Dating Dynamics</strong> is a modern dating and relationship blog based in Tokyo, Japan
+                        <strong>datingdynamo</strong> is a modern dating and relationship blog based in Tokyo, Japan
                         — created to help people
                         build genuine connections in today’s fast-paced world. Whether you're exploring online dating,
                         preparing for your
@@ -197,7 +199,7 @@
                     </p>
 
                     <p>
-                        From dating advice to success stories, <strong>Dating Dynamics</strong> helps you navigate the
+                        From dating advice to success stories, <strong>datingdynamo</strong> helps you navigate the
                         journey of love with
                         confidence — all from the heart of Tokyo. 💞
                     </p>
@@ -210,7 +212,7 @@
         <div class="container">
             <h2 class="section-title">What Our Readers Say</h2>
             <p class="section-subtitle">Heartfelt stories from people who found love, clarity, and confidence through
-                Dating Dynamics.</p>
+                datingdynamo.</p>
 
             <div class="testimonial-grid">
 
@@ -219,7 +221,7 @@
                     <div class="quote-icon">❝</div>
                     <div class="testimonial-content">
                         <p class="testimonial-text">
-                            “Dating Dynamics completely changed how I see relationships. Every article feels personal —
+                            “datingdynamo completely changed how I see relationships. Every article feels personal —
                             it’s like a friend guiding you through love and self-growth.”
                         </p>
                     </div>
@@ -255,7 +257,7 @@
                     <div class="quote-icon">❝</div>
                     <div class="testimonial-content">
                         <p class="testimonial-text">
-                            “I love the Tokyo-inspired stories and honest advice. Dating Dynamics helped me open my
+                            “I love the Tokyo-inspired stories and honest advice. datingdynamo helped me open my
                             heart again — and now I’m in a happy relationship.”
                         </p>
                     </div>
@@ -280,7 +282,7 @@
                 <h2 class="section-title">Join our newsletter for <br>
                     latest updates!</h2>
                 <p class="desc">Subscribe to our newsletter for weekly dating tips, relationship advice, and inspiring stories from Tokyo and beyond.</p>
-                <form action="subscribe.php" class="newsletter-form">
+                <form class="newsletter-form subscribeForm">
                     <div class="form-inner">
                         <div class="single-input-wrapper">
                             <input type="email" name="email" placeholder="Your email address" required>
@@ -290,6 +292,7 @@
                         </div>
                     </div>
                 </form>
+                <div id="responseMsg"></div>
             </div>
         </div>
     </section>
@@ -312,7 +315,7 @@
                 </div>
                 <div class="footer-newsletter-area">
                     <p class="tag">Join my newsletter:</p>
-                    <form action="subscribe.php">
+                    <form class="subscribeForm">
                         <div class="form-inner">
                             <div class="single-input-wrapper">
                                 <input type="email" name="email" placeholder="Your mail address" required>
@@ -322,6 +325,7 @@
                             </div>
                         </div>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -367,7 +371,44 @@
     <!-- main js file -->
     <script src="assets/js/main.js" defer></script>
     <!-- End Footer Area -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll(".subscribeForm");
 
+            forms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const responseDiv = this.nextElementSibling; // assumes <div class="responseMsg"> is right after the form
+
+                    fetch("subscribe.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            responseDiv.innerHTML = data;
+
+                            // Auto-hide after 3s
+                            if (data.trim() !== "") {
+                                setTimeout(() => {
+                                    responseDiv.style.opacity = "0";
+                                    setTimeout(() => {
+                                        responseDiv.innerHTML = "";
+                                        responseDiv.style.opacity = "1";
+                                    }, 400);
+                                }, 3000);
+                            }
+                        })
+                        .catch(() => {
+                            responseDiv.innerHTML = "<p class='error-msg'>Something went wrong. Please try again.</p>";
+                            setTimeout(() => { responseDiv.innerHTML = ""; }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

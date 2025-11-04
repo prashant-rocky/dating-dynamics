@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dating dynamics | privacy Policy</title>
+    <title>datingdynamo | privacy Policy</title>
     <link rel="shortcut icon" href="assets/images/icon/fav.svg" type="image/x-icon">
 
     <link rel="stylesheet preload" href="assets/css/plugins/fontawesome-5.css" as="style">
@@ -91,12 +91,13 @@
                             <div class="content">
                                 <h3 class="title mb--20">Get Newsletter</h3>
                             </div>
-                            <form action="subscribe.php">
+                            <form class="subscribeForm">
                                 <div class="input-div">
-                                    <input type="email" placeholder="Your email..." required>
+                                    <input name="email" type="email" placeholder="Your email..." required>
                                 </div>
                                 <button type="submit" class="subscribe-btn">Subscribe Now</button>
                             </form>
+                            <div id="responseMsg"></div>
                         </div>
                     </div>
                 </div>
@@ -136,10 +137,11 @@
                         <div class="eblog-p-sub-heading">
                             <h3>Let's join our newsletter!</h3>
                         </div>
-                        <form method="POST">
-                            <input type="email" required placeholder="Enter Your Email..">
+                        <form class="subscribeForm">
+                            <input name="email" type="email" required placeholder="Enter Your Email..">
                             <button type="submit">Submit</button>
                         </form>
+                        <div id="responseMsg"></div>
                         <div class="eblog-bottom-popup">
                             <p>Do not worry we don't spam!</p>
                         </div>
@@ -157,7 +159,7 @@
     <h2 class="Nsection-title">Privacy Policy</h2>
 
     <p>
-      At <strong>Dating Dynamics</strong> (based in Tokyo, Japan), we respect and protect the privacy of our visitors. 
+      At <strong>datingdynamo</strong> (based in Tokyo, Japan), we respect and protect the privacy of our visitors. 
       This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit or interact with our website.
     </p>
 
@@ -205,7 +207,7 @@
     <h3>6. Affiliate Links & Third-Party Sites</h3>
     <p>
       Our blog may contain affiliate links or references to third-party websites. 
-      These sites have separate privacy practices, and <strong>Dating Dynamics</strong> is not responsible for their content or policies.
+      These sites have separate privacy practices, and <strong>datingdynamo</strong> is not responsible for their content or policies.
     </p>
 
     <h3>7. Your Consent & Rights</h3>
@@ -247,7 +249,7 @@
                 </div>
                 <div class="footer-newsletter-area">
                     <p class="tag">Join my newsletter:</p>
-                    <form action="subscribe.php">
+                    <form class="subscribeForm">
                         <div class="form-inner">
                             <div class="single-input-wrapper">
                                 <input type="email" name="email" placeholder="Your mail address" required>
@@ -257,6 +259,7 @@
                             </div>
                         </div>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -302,7 +305,45 @@
     <!-- main js file -->
     <script src="assets/js/main.js" defer></script>
     <!-- End Footer Area -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll(".subscribeForm");
 
+            forms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const responseDiv = this.nextElementSibling; // assumes <div class="responseMsg"> is right after the form
+
+                    fetch("subscribe.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            responseDiv.innerHTML = data;
+
+                            // Auto-hide after 3s
+                            if (data.trim() !== "") {
+                                setTimeout(() => {
+                                    responseDiv.style.opacity = "0";
+                                    setTimeout(() => {
+                                        responseDiv.innerHTML = "";
+                                        responseDiv.style.opacity = "1";
+                                    }, 400);
+                                }, 3000);
+                            }
+                        })
+                        .catch(() => {
+                            responseDiv.innerHTML = "<p class='error-msg'>Something went wrong. Please try again.</p>";
+                            setTimeout(() => { responseDiv.innerHTML = ""; }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
+</body>
 </body>
 
 </html>

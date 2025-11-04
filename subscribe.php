@@ -1,45 +1,51 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// Database connection
+$servername = "localhost";
+$username = "root";              // Change if needed
+$password = "";                  // Change if needed
+$dbname = "dating-dynamics";     // Your database name
 
-// Make sure the PHPMailer folder is in the same directory as this file
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $message = "Please enter a valid email address.";
-        header("Location: index.html?message=" . urlencode($message));
-        exit;
-    }
-
-    $mail = new PHPMailer(true);
-    try {
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'yourgmail@gmail.com';  // Your Gmail address
-        $mail->Password = 'your-app-password';   // Gmail App Password
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-
-        // Email details
-        $mail->setFrom('yourgmail@gmail.com', 'Dating Dynamics');
-        $mail->addAddress('itzrocky487@gmail.com');  // Where you want to receive subscriber emails
-        $mail->Subject = 'New Newsletter Subscriber';
-        $mail->Body = "A new subscriber joined Dating Dynamics:\n\nEmail: $email";
-
-        $mail->send();
-        $message = "Thank you for subscribing!";
-    } catch (Exception $e) {
-        $message = "Mailer Error: " . $mail->ErrorInfo;
-    }
-
-    // Redirect back to your site with message
-    header("Location: index.html?message=" . urlencode($message));
-    exit;
+// Check database connection
+if ($conn->connect_error) {
+    die("<p class='error-msg'>Database connection failed!</p>");
 }
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']);
+
+    // Validate email
+    if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        // Check for duplicate entry
+        $check = $conn->prepare("SELECT * FROM subscribe WHERE email = ?");
+        $check->bind_param("s", $email);
+        $check->execute();
+        $result = $check->get_result();
+
+        if ($result->num_rows > 0) {
+            echo "<p class='error-msg'>You’re already subscribed! 🌴</p>";
+        } else {
+            // Insert new subscriber
+            $stmt = $conn->prepare("INSERT INTO subscribe (email) VALUES (?)");
+            $stmt->bind_param("s", $email);
+
+            if ($stmt->execute()) {
+                echo "<p class='success-msg'>Thank you for subscribing! 🎉</p>";
+            } else {
+                echo "<p class='error-msg'>Something went wrong. Please try again later.</p>";
+            }
+
+            $stmt->close();
+        }
+        $check->close();
+
+    } else {
+        echo "<p class='error-msg'>Please enter a valid email address.</p>";
+    }
+}
+
+$conn->close();
 ?>

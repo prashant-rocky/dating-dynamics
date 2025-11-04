@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dating dynamics | disclaimer</title>
+    <title>datingdynamo | disclaimer</title>
     <link rel="shortcut icon" href="assets/images/icon/fav.svg" type="image/x-icon">
 
     <link rel="stylesheet preload" href="assets/css/plugins/fontawesome-5.css" as="style">
@@ -86,12 +86,13 @@
                             <div class="content">
                                 <h3 class="title mb--20">Get Newsletter</h3>
                             </div>
-                            <form action="subscribe.php">
+                            <form class="subscribeForm">
                                 <div class="input-div">
-                                    <input type="email" placeholder="Your email..." required>
+                                    <input type="email" name="email" placeholder="Your email..." required>
                                 </div>
                                 <button type="submit" class="subscribe-btn">Subscribe Now</button>
                             </form>
+                            <div id="responseMsg"></div>
                         </div>
                     </div>
                 </div>
@@ -135,6 +136,7 @@
                             <input type="email" required placeholder="Enter Your Email..">
                             <button type="submit">Submit</button>
                         </form>
+                        <div id="responseMsg"></div>
                         <div class="eblog-bottom-popup">
                             <p>Do not worry we don't spam!</p>
                         </div>
@@ -151,14 +153,14 @@
   <div class="container">
     <h2 class="section-title">Disclaimer</h2>
     <p>
-      Welcome to <strong>Dating Dynamics</strong> — a relationship and dating advice platform based in Tokyo, Japan.
+      Welcome to <strong>datingdynamo</strong> — a relationship and dating advice platform based in Tokyo, Japan.
       All content shared here is for informational and educational purposes only.
       While we strive to offer accurate, insightful, and positive guidance, our content should not be taken as professional advice.
     </p>
 
     <p>
       The opinions and experiences expressed on this website reflect general perspectives on dating, relationships, and personal growth.
-      <strong>Dating Dynamics</strong> and its authors are not responsible for personal outcomes, decisions, or interpretations based on our content.
+      <strong>datingdynamo</strong> and its authors are not responsible for personal outcomes, decisions, or interpretations based on our content.
     </p>
 
     <p>
@@ -168,7 +170,7 @@
 
     <p>
       We also occasionally reference third-party websites for additional information.
-      <strong>Dating Dynamics</strong> does not endorse or control the content on those external platforms.
+      <strong>datingdynamo</strong> does not endorse or control the content on those external platforms.
     </p>
 
     <p class="contact-info">
@@ -196,7 +198,7 @@
                 </div>
                 <div class="footer-newsletter-area">
                     <p class="tag">Join my newsletter:</p>
-                    <form action="subscribe.php">
+                    <form class="subscribeForm">
                         <div class="form-inner">
                             <div class="single-input-wrapper">
                                 <input type="email" name="email" placeholder="Your mail address" required>
@@ -206,6 +208,7 @@
                             </div>
                         </div>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -251,7 +254,45 @@
     <!-- main js file -->
     <script src="assets/js/main.js" defer></script>
     <!-- End Footer Area -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll(".subscribeForm");
 
+            forms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const responseDiv = this.nextElementSibling; // assumes <div class="responseMsg"> is right after the form
+
+                    fetch("subscribe.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            responseDiv.innerHTML = data;
+
+                            // Auto-hide after 3s
+                            if (data.trim() !== "") {
+                                setTimeout(() => {
+                                    responseDiv.style.opacity = "0";
+                                    setTimeout(() => {
+                                        responseDiv.innerHTML = "";
+                                        responseDiv.style.opacity = "1";
+                                    }, 400);
+                                }, 3000);
+                            }
+                        })
+                        .catch(() => {
+                            responseDiv.innerHTML = "<p class='error-msg'>Something went wrong. Please try again.</p>";
+                            setTimeout(() => { responseDiv.innerHTML = ""; }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
+</body>
 </body>
 
 </html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dating dynamics | contact us</title>
+    <title>datingdynamo | contact us</title>
     <link rel="shortcut icon" href="assets/images/icon/fav.svg" type="image/x-icon">
 
     <link rel="stylesheet preload" href="assets/css/plugins/fontawesome-5.css" as="style">
@@ -16,62 +16,62 @@
     <link rel="stylesheet preload" href="assets/css/vendor/magnific-popup.css" as="style">
     <link rel="stylesheet preload" href="assets/css/style.css" as="style">
     <style>
-.newsletter-box {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  max-width: 350px;
-  margin: 20px auto;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-}
+        .newsletter-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-width: 350px;
+            margin: 20px auto;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.newsletter-box p {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 15px;
-}
+        .newsletter-box p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 15px;
+        }
 
-.newsletter-box form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
+        .newsletter-box form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-.newsletter-box input[type="email"] {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1.5px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  transition: 0.3s ease;
-}
+        .newsletter-box input[type="email"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
 
-.newsletter-box input[type="email"]:focus {
-  border-color: #e75480;
-  box-shadow: 0 0 4px rgba(231, 84, 128, 0.3);
-}
+        .newsletter-box input[type="email"]:focus {
+            border-color: #e75480;
+            box-shadow: 0 0 4px rgba(231, 84, 128, 0.3);
+        }
 
-.newsletter-box button {
-  background-color: #e75480;
-  color: #fff;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  transition: 0.3s ease;
-}
+        .newsletter-box button {
+            background-color: #e75480;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
 
-.newsletter-box button:hover {
-  background-color: #d74470;
-}
-</style>
+        .newsletter-box button:hover {
+            background-color: #d74470;
+        }
+    </style>
 
 </head>
 
@@ -144,12 +144,13 @@
                             <div class="content">
                                 <h3 class="title mb--20">Get Newsletter</h3>
                             </div>
-                            <form action="subscribe.php">
+                            <form class="subscribeForm">
                                 <div class="input-div">
-                                    <input type="email" placeholder="Your email..." required>
+                                    <input type="email" name="email" placeholder="Your email..." required>
                                 </div>
                                 <button type="submit" class="subscribe-btn">Subscribe Now</button>
                             </form>
+                            <div id="responseMsg"></div>
                         </div>
                     </div>
                 </div>
@@ -193,6 +194,7 @@
                             <input type="email" required placeholder="Enter Your Email..">
                             <button type="submit">Submit</button>
                         </form>
+                        <div id="responseMsg"></div>
                         <div class="eblog-bottom-popup">
                             <p>Do not worry we don't spam!</p>
                         </div>
@@ -229,7 +231,7 @@
     <section id="contact" class="contact-section">
         <div class="container">
             <h2 class="Nsection-title">Contact Us</h2>
-            <p class="section-subtitle">We’d love to hear from you — connect with the Dating Dynamics team in Tokyo.</p>
+            <p class="section-subtitle">We’d love to hear from you — connect with the datingdynamo team in Tokyo.</p>
 
             <div class="contact-wrapper">
                 <!-- Left Column: Contact Details -->
@@ -248,11 +250,12 @@
                     </ul>
 
                     <div class="newsletter-box">
-                        <p>Stay Updated with Dating Dynamics</p>
-                        <form action="subscribe.php" method="POST">
+                        <p>Stay Updated with datingdynamo</p>
+                        <form class="subscribeForm">
                             <input type="email" name="email" placeholder="Enter your email..." required>
                             <button type="submit">Subscribe</button>
                         </form>
+                        <div id="responseMsg"></div>
                     </div>
 
                 </div>
@@ -275,6 +278,7 @@
                         </div>
                         <button type="submit" class="btn-submit">Send Message</button>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -292,7 +296,7 @@
                     latest updates!</h2>
                 <p class="desc">Subscribe to our newsletter for weekly dating tips, relationship advice, and inspiring
                     stories from Tokyo and beyond.</p>
-                <form action="subscribe.php" class="newsletter-form">
+                <form class="subscribeForm" class="newsletter-form">
                     <div class="form-inner">
                         <div class="single-input-wrapper">
                             <input type="email" name="email" placeholder="Your email address" required>
@@ -302,6 +306,7 @@
                         </div>
                     </div>
                 </form>
+                <div id="responseMsg"></div>
             </div>
         </div>
     </section>
@@ -324,7 +329,7 @@
                 </div>
                 <div class="footer-newsletter-area">
                     <p class="tag">Join my newsletter:</p>
-                    <form action="subscribe.php">
+                    <form class="subscribeForm">
                         <div class="form-inner">
                             <div class="single-input-wrapper">
                                 <input type="email" name="email" placeholder="Your mail address" required>
@@ -334,6 +339,7 @@
                             </div>
                         </div>
                     </form>
+                    <div id="responseMsg"></div>
                 </div>
             </div>
         </div>
@@ -379,7 +385,44 @@
     <!-- main js file -->
     <script src="assets/js/main.js" defer></script>
     <!-- End Footer Area -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll(".subscribeForm");
 
+            forms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const responseDiv = this.nextElementSibling; // assumes <div class="responseMsg"> is right after the form
+
+                    fetch("subscribe.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.text())
+                        .then(data => {
+                            responseDiv.innerHTML = data;
+
+                            // Auto-hide after 3s
+                            if (data.trim() !== "") {
+                                setTimeout(() => {
+                                    responseDiv.style.opacity = "0";
+                                    setTimeout(() => {
+                                        responseDiv.innerHTML = "";
+                                        responseDiv.style.opacity = "1";
+                                    }, 400);
+                                }, 3000);
+                            }
+                        })
+                        .catch(() => {
+                            responseDiv.innerHTML = "<p class='error-msg'>Something went wrong. Please try again.</p>";
+                            setTimeout(() => { responseDiv.innerHTML = ""; }, 3000);
+                        });
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
